@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            text-align: center;
+        }
+
+        .melodies,
+        .btn-group {
+            display: flex;
+            justify-content: center;
+        }
+
+        .omataton {
+            width: 94px;
+            height: 218px;
+            background: url("MergedImages.jpg");
+        }
+
+        .play {
+            animation: play 0.5s steps(16);
+        }
+
+        .btn {
+            background: transparent;
+            border: 1px solid;
+            text-transform: uppercase;
+            width: 94px;
+            height: 94px;
+            box-sizing: border-box;
+        }
+
+        @keyframes play {
+            from {
+                background-position: 0px;
+            }
+
+            to {
+                background-position: 1504px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>오마타톤 피아노 For Web</h1>
+    <h2>Inspired by <a href="https://www.youtube.com/watch?v=wFBH5eRALwk" target="_blank">this youtube</a></h2>
+    <h3>Made by <a href="https://github.com/yunseop-dev" target="_blank">Yunseop Kim</a></h3>
+    <section class="melodies"></section>
+    <section class="btn-group"></section>
+    <script>
+        const melodiesMapper = {
+            do: "https://freesound.org/data/previews/392/392398_7397136-lq.mp3",
+            re: "https://freesound.org/data/previews/392/392402_7397136-lq.mp3",
+            mi: "https://freesound.org/data/previews/392/392403_7397136-lq.mp3",
+            fa: "https://freesound.org/data/previews/392/392397_7397136-lq.mp3",
+            sol: "https://freesound.org/data/previews/392/392400_7397136-lq.mp3",
+            la: "https://freesound.org/data/previews/392/392396_7397136-lq.mp3",
+            si: "https://freesound.org/data/previews/392/392401_7397136-lq.mp3",
+            doOctave: "https://freesound.org/data/previews/392/392399_7397136-lq.mp3",
+        }
+        const melodies = Object.keys(melodiesMapper);
+
+        function play(melody) {
+            try {
+                let melodyUrl = melodiesMapper[melody];
+                const target = document.getElementById(`melody-${melody}`);
+                const audio = new Audio(melodyUrl);
+                audio.play();
+                target.classList.add('play')
+                setTimeout(() => { target.classList.remove('play') }, 350);
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        function init() {
+            const melodiesEl = document.getElementsByClassName('melodies')[0];
+            const btnGroupEl = document.getElementsByClassName('btn-group')[0];
+            melodies.forEach(note => {
+                // initialize images
+                const div = document.createElement('div');
+                div.classList.add('omataton')
+                div.id = `melody-${note}`
+                melodiesEl.appendChild(div)
+
+                // initialize buttons
+                const btn = document.createElement('button')
+                btn.id = `play-${note}`
+                btn.classList.add('btn')
+                btn.onclick = () => play(note)
+                btn.innerHTML = note
+                btnGroupEl.appendChild(btn)
+            })
+        }
+
+        init();
+
+        document.addEventListener('keydown', (e) => {
+            const value = Number(e.key) - 1;
+            if (value >= 0 && value < 9) {
+                const melody = Object.keys(melodiesMapper)[value];
+                play(melody)
+            }
+        })
+    </script>
+</body>
+
+</html>

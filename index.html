@@ -11,13 +11,12 @@
             text-align: center;
         }
 
-        .melodies,
-        .btn-group {
-            display: flex;
-            justify-content: center;
+        .wrapper {
+            overflow: auto;
         }
 
         .omataton {
+            display: inline-block;
             width: 94px;
             height: 218px;
             background: url("MergedImages.jpg");
@@ -36,6 +35,13 @@
             box-sizing: border-box;
         }
 
+        @media screen and (max-width: 360px) {
+            .melodies,
+            .btn-group {
+                width: 752px;
+            }
+        }
+
         @keyframes play {
             from {
                 background-position: 0px;
@@ -52,18 +58,20 @@
     <h1>오마타톤 피아노 For Web</h1>
     <h2>Inspired by <a href="https://www.youtube.com/watch?v=wFBH5eRALwk" target="_blank">this youtube</a></h2>
     <h3>Made by <a href="https://github.com/yunseop-dev" target="_blank">Yunseop Kim</a></h3>
-    <section class="melodies"></section>
-    <section class="btn-group"></section>
+    <div class="wrapper">
+        <section class="melodies"></section>
+        <section class="btn-group"></section>
+    </div>
     <script>
         const melodiesMapper = {
-            do: "https://freesound.org/data/previews/392/392398_7397136-lq.mp3",
-            re: "https://freesound.org/data/previews/392/392402_7397136-lq.mp3",
-            mi: "https://freesound.org/data/previews/392/392403_7397136-lq.mp3",
-            fa: "https://freesound.org/data/previews/392/392397_7397136-lq.mp3",
-            sol: "https://freesound.org/data/previews/392/392400_7397136-lq.mp3",
-            la: "https://freesound.org/data/previews/392/392396_7397136-lq.mp3",
-            si: "https://freesound.org/data/previews/392/392401_7397136-lq.mp3",
-            doOctave: "https://freesound.org/data/previews/392/392399_7397136-lq.mp3",
+            do: "https://www.musicca.com/lydfiler/piano/28.mp3",
+            re: "https://www.musicca.com/lydfiler/piano/30.mp3",
+            mi: "https://www.musicca.com/lydfiler/piano/32.mp3",
+            fa: "https://www.musicca.com/lydfiler/piano/33.mp3",
+            sol: "https://www.musicca.com/lydfiler/piano/35.mp3",
+            la: "https://www.musicca.com/lydfiler/piano/37.mp3",
+            si: "https://www.musicca.com/lydfiler/piano/39.mp3",
+            doOctave: "https://www.musicca.com/lydfiler/piano/40.mp3",
         }
         const melodies = Object.keys(melodiesMapper);
 
@@ -71,9 +79,9 @@
             try {
                 let melodyUrl = melodiesMapper[melody];
                 const target = document.getElementById(`melody-${melody}`);
+                target.classList.add('play')
                 const audio = new Audio(melodyUrl);
                 audio.play();
-                target.classList.add('play')
                 setTimeout(() => { target.classList.remove('play') }, 350);
             } catch (error) {
                 console.log(error)
